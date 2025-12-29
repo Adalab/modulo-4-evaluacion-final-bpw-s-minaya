@@ -1,0 +1,32 @@
+{
+  "name": "modulo-4-evaluacion-final-bpw-s-minaya",
+  "version": "1.0.0",
+  "description": "Servidor de un API para obtener información de los vecinos e islas en Animal Crossing",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Adalab/modulo-4-evaluacion-final-bpw-s-minaya.git"
+  },
+  "keywords": [
+    "api",
+    "express",
+    "MySQL"
+  ],
+  "author": "Sofía Minaya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Adalab/modulo-4-evaluacion-final-bpw-s-minaya/issues"
+  },
+  "homepage": "https://github.com/Adalab/modulo-4-evaluacion-final-bpw-s-minaya#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mysql2": "^3.16.0"
+  }
+}
