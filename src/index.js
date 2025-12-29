@@ -226,3 +226,37 @@ server.put("/api/vecinos/:id", async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
+
+// DELETE   /api/vecinos/:id (borrar)
+
+server.delete("/api/vecinos/:id", async (req, res) => {
+  try {
+    // 1. Conectarse a la base de datos.
+    const conn = await getConnection();
+
+    // 2. Preparar sentencia SQL.
+    const deleteOneNeighbour = `
+        DELETE FROM vecinos
+        WHERE id = ?
+        LIMIT 1;`;
+
+    // 3. Lanzar la sentencia SQL y obtener los resultados.
+    const [result] = await conn.execute(deleteOneNeighbour, [req.params.id]);
+
+    // 4. Cerrar la conexión con la base de datos.
+    await conn.end();
+
+    // 5. Devolver la información.
+
+    if (result.affectedRows === 1) {
+      res.json({ success: true });
+    } else {
+      res
+        .status(400)
+        .json({ success: false, error: "No se pudieron borrar los datos" });
+    }
+  } catch (err) {
+    // Devolver una respuesta.
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
