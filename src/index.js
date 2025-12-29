@@ -54,3 +54,40 @@ server.get("/", (req, res) => {
 });
 
 // ENDPOINTS PARA EL API
+
+// GET    /api/vecinos    -> [{},{}] (listar)
+
+server.get("/api/vecinos", async (req, res) => {
+  try {
+    const conn = await getConnection();
+
+    // 2. Preparar sentencia SQL (query).
+    const selectAllNeighbours = `
+      SELECT 
+      vecinos.id AS vecino_id,
+      vecinos.nombre AS vecino_nombre,
+      vecinos.foto,
+      vecinos.personalidad,
+      vecinos.cumpleaños,
+      vecinos.frase,
+      vecinos.estilo_casa,
+      especies.id AS especie_id,
+      especies.nombre AS especie_nombre,
+      especies.descripcion AS especie_descripcion
+       FROM vecinos
+       JOIN especies
+       ON vecinos.especies_id = especies.id;`;
+
+    // 3. Lanzar la sentencia SQL y obtener los resultados.
+    const [results] = await conn.query(selectAllNeighbours);
+
+    // 4. Cerrar la conexión con la base de datos.
+    await conn.end();
+
+    // 5. Devolver la información.
+    res.json({ success: true, vecinos: results });
+  } catch (err) {
+    // Devolver una respuesta
+    res.json({ success: false, error: err.message });
+  }
+});

@@ -114,8 +114,11 @@ CREATE TABLE `vecinos` (
   `cumpleaños` date NOT NULL,
   `frase` varchar(100) DEFAULT NULL,
   `estilo_casa` varchar(30) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `nombre_UNIQUE` (`nombre`)
+  `especies_id` int NOT NULL,
+  PRIMARY KEY (`id`,`especies_id`),
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`),
+  KEY `fk_vecinos_especies_idx` (`especies_id`),
+  CONSTRAINT `fk_vecinos_especies` FOREIGN KEY (`especies_id`) REFERENCES `especies` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -125,7 +128,7 @@ CREATE TABLE `vecinos` (
 
 LOCK TABLES `vecinos` WRITE;
 /*!40000 ALTER TABLE `vecinos` DISABLE KEYS */;
-INSERT INTO `vecinos` VALUES (1,'Raymond','https://dodo.ac/np/images/2/2a/Raymond_NH.png','Perezoso','2020-03-08','¡Por supuesto!','Oficina'),(2,'Marshal','https://dodo.ac/np/images/d/da/Marshal_NH.png','Esnob','2020-09-29','guaperas','Elegante'),(3,'Zucker','https://dodo.ac/np/images/7/7f/Zucker_NH.png','Perezoso','2020-03-08','bloop','Japonés'),(4,'Fauna','https://dodo.ac/np/images/9/91/Fauna_NH.png','Normal','2020-03-26','corderito','Natural'),(5,'Stitches','https://dodo.ac/np/images/thumb/5/56/Stitches_NH.png/150px-Stitches_NH.png','Perezoso','2020-02-10','retales','Colorido');
+INSERT INTO `vecinos` VALUES (1,'Raymond','https://dodo.ac/np/images/2/2a/Raymond_NH.png','Perezoso','2020-03-08','¡Por supuesto!','Oficina',1),(2,'Marshal','https://dodo.ac/np/images/d/da/Marshal_NH.png','Esnob','2020-09-29','guaperas','Elegante',2),(3,'Zucker','https://dodo.ac/np/images/7/7f/Zucker_NH.png','Perezoso','2020-03-08','bloop','Japonés',3),(4,'Fauna','https://dodo.ac/np/images/9/91/Fauna_NH.png','Normal','2020-03-26','corderito','Natural',4),(5,'Stitches','https://dodo.ac/np/images/thumb/5/56/Stitches_NH.png/150px-Stitches_NH.png','Perezoso','2020-02-10','retales','Colorido',5);
 /*!40000 ALTER TABLE `vecinos` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -138,4 +141,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-29 10:13:57
+-- Dump completed on 2025-12-29 11:24:42
