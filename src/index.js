@@ -154,3 +154,75 @@ server.post("/api/vecinos", async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
+
+// PUT   /api/vecinos/:id (modificar)
+
+server.put("/api/vecinos/:id", async (req, res) => {
+  if (!req.body.nombre) {
+    // Devolver una respuesta de error.
+    return res
+      .status(400)
+      .json({ success: false, error: "Se esperaba el campo nombre" });
+  }
+
+  if (!req.body.personalidad) {
+    // Devolver una respuesta de error.
+    return res
+      .status(400)
+      .json({ success: false, error: "Se esperaba el campo personalidad" });
+  }
+
+  if (!req.body.cumpleaños) {
+    // Devolver una respuesta de error.
+    return res
+      .status(400)
+      .json({ success: false, error: "Se esperaba el campo cumpleaños" });
+  }
+  if (!req.body.especies_id) {
+    // Devolver una respuesta de error.
+    return res.status(400).json({
+      success: false,
+      error:
+        "Se esperaba el campo especies_id (1-Gato, 2-Ardilla, 3-Pulpo, 4-Ciervo, 5-Oso)",
+    });
+  }
+
+  try {
+    // 1. Conectarse a la base de datos.
+    const conn = await getConnection();
+
+    // 2. Preparar sentencia SQL.
+    const updateOneNeighbour = `
+        UPDATE vecinos
+        SET nombre = ?, foto = ?, personalidad = ?, cumpleaños = ?, frase = ?, estilo_casa = ?, especies_id = ?
+        WHERE id = ?;`;
+
+    // 3. Lanzar la sentencia SQL y obtener los resultados.
+    const [result] = await conn.execute(updateOneNeighbour, [
+      req.body.nombre,
+      req.body.foto,
+      req.body.personalidad,
+      req.body.cumpleaños,
+      req.body.frase,
+      req.body.estilo_casa,
+      req.body.especies_id,
+      req.params.id,
+    ]);
+
+    // 4. Cerrar la conexión con la base de datos.
+    await conn.end();
+
+    // 5. Devolver la información.
+
+    if (result.affectedRows === 1) {
+      res.json({ success: true });
+    } else {
+      res
+        .status(400)
+        .json({ success: false, error: "No se pudieron cambiar los datos" });
+    }
+  } catch (err) {
+    // Devolver una respuesta.
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
